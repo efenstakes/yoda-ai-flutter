@@ -3,7 +3,9 @@ import 'package:yoda_fl/models/prompt.dart';
 
 
 class PromptProvider with ChangeNotifier {
-  final List<Prompt> _prompts = [
+  bool isLoading = false;
+  bool hasError = false;
+  List<Prompt> prompts = [
     Prompt(
       prompt: "Hola",
       reply: "Hola"
@@ -28,16 +30,21 @@ class PromptProvider with ChangeNotifier {
   
 
   // submit prompt
-  void submitPrompt({required String prompt}) {
-    
+  Future<void> submitPrompt({required String prompt}) async {
+    isLoading = true;
+
     try {
       // make api request to our api
-
+      String reply = "Reply to $prompt";
+      
+      // add it to state
+      prompts.add(Prompt( prompt: prompt, reply: reply ));
     
     } catch (e) {
       
     }
 
+    isLoading = false;
     notifyListeners();
   }
   
