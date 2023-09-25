@@ -1,5 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
 import 'package:yoda_fl/models/prompt.dart';
+import 'package:yoda_fl/providers/prompt.dart';
 import 'package:yoda_fl/widgets/no_prompts.dart';
 import 'package:yoda_fl/widgets/prompt_card.dart';
 import 'package:yoda_fl/widgets/prompt_form.dart';
@@ -12,29 +17,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-  final List<Prompt> _prompts = [
-    Prompt(
-      prompt: "Hola",
-      reply: "Hola"
-    ),
-    Prompt(
-      prompt: "How are you doing",
-      reply: "Just ask something"
-    ),
-    Prompt(
-      prompt: "Hola",
-      reply: "Hola"
-    ),
-    Prompt(
-      prompt: "Hola",
-      reply: "Hola"
-    ),
-    Prompt(
-      prompt: "Hola",
-      reply: "Hola"
-    ),
-  ];
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +26,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Holmes AI"),
+        titleTextStyle: const TextStyle(
+          fontSize: 24,
+          color: Colors.teal,
+          fontWeight: FontWeight.bold,
+        ),
         centerTitle: true,
         actions: const [
           IconButton(onPressed: null, icon: Icon(Icons.add))
@@ -53,35 +41,44 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Stack(
           children: [
       
-            // when we have prompts
-            if( _prompts.isNotEmpty )
-              ListView(
-                children: _prompts.map((prompt) {
-                  
-                  return PromptCard(prompt: prompt);
-                }).toList(),
-              ),
+            Consumer<PromptProvider>(
+              builder: (ctx, PromptProvider promptProvider, child) {
+
+                // when we have prompts
+                if( promptProvider.prompts.isNotEmpty ) {
+
+                  return SizedBox(
+                    height: size.height * .8,
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: promptProvider.prompts.length,
+                      itemBuilder: (_, i)=> PromptCard(prompt: promptProvider.prompts[i]),
+                    ),
+                  );
+                }
         
-            // when no prompts
-            if( _prompts.isEmpty )
-              const Padding(
-                padding: EdgeInsets.all(12),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: NoPromptsCard(),
-                ),
-              ),
+                // when no prompts
+                return const Padding(
+                  padding: EdgeInsets.all(12),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: NoPromptsCard(),
+                  ),
+                );
+              },
+            ),
+            
       
             // prompt input
             Positioned(
-              bottom: 0,
+              bottom: 24,
               left: 0,
               width: size.width,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                color: Colors.white.withOpacity(.5),
-                height: 120,
-                child: const PromptForm(),
+                color: Colors.white.withOpacity(.9),
+                // height: 56,
+                child: PromptForm(onAdd: _onAddPrompt),
               ),
             ),
       
@@ -90,4 +87,18 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+
+  // scroll to bottom of list
+  _onAddPrompt() async {
+      print("scroll to bottom of list ");
+
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent + 200,
+        duration: const Duration(milliseconds: 1),
+        curve: Curves.fastOutSlowIn
+      );
+  }
+
+
 }
