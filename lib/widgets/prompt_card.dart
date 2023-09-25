@@ -24,7 +24,7 @@ class PromptCard extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: PromptTile(
-              text: prompt.prompt!,
+              text: prompt.reply!,
               width: width * .8,
               type: PromptTileType.reply,
             ),
