@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
 
       ],
       child: MaterialApp(
-        title: 'Holmes AI',
+        title: 'Yoda AI',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

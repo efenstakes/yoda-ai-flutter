@@ -51,7 +51,7 @@ class _PromptFormState extends State<PromptForm> {
             },
           ),
           floatingLabelBehavior: FloatingLabelBehavior.never,
-          labelText: 'I\'m Holmes... Ask me anything.',
+          labelText: 'I\'m Yoda... Ask me anything.',
           hintText: 'What is your name?',
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
@@ -69,7 +69,7 @@ class _PromptFormState extends State<PromptForm> {
 
 
   _submitPrompt() async {
-    print("ask holmes");
+    print("ask Yoda");
 
     if (_formKey.currentState!.validate()) {
       print('form is valid');

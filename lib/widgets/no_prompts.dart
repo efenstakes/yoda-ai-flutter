@@ -29,7 +29,7 @@ class _NoPromptsCardState extends State<NoPromptsCard> {
           ),
 
           const Text(
-            "You have not asked my anything in this thread yet. I am Holmes, Holmes AI, consider me to be your personal assistant.",
+            "You have not asked my anything in this thread yet. I am Yoda, Yoda AI, consider me to be your personal assistant.",
             // style: Theme.of(context).textTheme.bodyLarge,
             textAlign: TextAlign.center,
           ),

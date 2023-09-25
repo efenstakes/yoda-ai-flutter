@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Holmes AI"),
+        title: const Text("Yoda AI"),
         titleTextStyle: const TextStyle(
           fontSize: 24,
           color: Colors.teal,
