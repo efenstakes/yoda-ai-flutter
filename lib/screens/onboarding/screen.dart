@@ -46,7 +46,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     prefs.setBool("HAS::ONBOARDED", true);
 
     // ignore: use_build_context_synchronously
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => const HomeScreen(),
