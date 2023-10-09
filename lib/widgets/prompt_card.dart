@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:yoda_fl/models/prompt.dart';
 
 
@@ -18,14 +19,14 @@ class PromptCard extends StatelessWidget {
         children: [
     
           // prompt
-          PromptTile(text: prompt.prompt!, width: width * .8, type: PromptTileType.prompt,),
+          PromptTile(text: prompt.prompt!, width: width * .9, type: PromptTileType.prompt,),
           
           // reply
           Align(
             alignment: Alignment.centerRight,
             child: PromptTile(
               text: prompt.reply!,
-              width: width * .8,
+              width: width * .9,
               type: PromptTileType.reply,
             ),
           ),
@@ -51,7 +52,7 @@ class PromptTile extends StatelessWidget {
       margin: const EdgeInsets.all(6),
       width: width,
       decoration: BoxDecoration(
-        color: type == PromptTileType.prompt ? Colors.blueGrey.shade100 : Colors.teal,
+        color: type == PromptTileType.prompt ? Colors.blueGrey.shade100 : Color.fromARGB(255, 158, 223, 217),
         borderRadius: BorderRadius.only(
           topLeft: const Radius.circular(12),
           topRight: const Radius.circular(12),
@@ -59,11 +60,32 @@ class PromptTile extends StatelessWidget {
           bottomRight: type == PromptTileType.prompt ? const Radius.circular(12) : const Radius.circular(6),
         ),
       ),
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.titleMedium!.copyWith(
-          fontWeight: FontWeight.normal,
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          // copy to clipboard
+          if ( type == PromptTileType.reply )
+            Align(
+              alignment: Alignment.centerRight,
+              child: GestureDetector(
+                onTap: () {
+                  Clipboard.setData(ClipboardData(text: text));
+                },
+                child: Icon(Icons.copy, size: 20, color: Colors.teal[900],),
+              ),
+            ),
+          
+          if ( type == PromptTileType.reply )
+            const SizedBox(height: 12),
+
+          Text(
+            text,
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ],
       ),
     );
   }
