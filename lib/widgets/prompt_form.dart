@@ -31,6 +31,7 @@ class _PromptFormState extends State<PromptForm> {
           suffix: Consumer<PromptProvider>(
             builder: (context, value, child) {
 
+              // return SizedBox.shrink();
               if( value.isLoading ) {
 
                 return const SizedBox(
@@ -43,13 +44,18 @@ class _PromptFormState extends State<PromptForm> {
                 );
               } else {
 
-                return IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: _submitPrompt,
+                return SizedBox(
+                  width: 32,
+                  height: 32,
+                  child: IconButton(
+                    icon: const Icon(Icons.send, size: 20,),
+                    onPressed: _submitPrompt,
+                  ),
                 );
               }
             },
           ),
+          // suffixIcon: ,
           floatingLabelBehavior: FloatingLabelBehavior.never,
           labelText: 'I\'m Yoda... Ask me anything.',
           hintText: 'What is your name?',
