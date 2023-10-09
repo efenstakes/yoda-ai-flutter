@@ -38,51 +38,67 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Container(
         height: size.height,
-        child: Stack(
-          children: [
-      
-            Consumer<PromptProvider>(
-              builder: (ctx, PromptProvider promptProvider, child) {
+        child: Consumer<PromptProvider>(
+          builder: (ctx, PromptProvider promptProvider, child) {
+            
+            return Stack(
+              children: [
+
 
                 // when we have prompts
-                if( promptProvider.prompts.isNotEmpty ) {
-
-                  return SizedBox(
+                if( promptProvider.prompts.isNotEmpty )
+                  SizedBox(
                     height: size.height * .8,
                     child: ListView.builder(
                       controller: _scrollController,
                       itemCount: promptProvider.prompts.length,
                       itemBuilder: (_, i)=> PromptCard(prompt: promptProvider.prompts[i]),
                     ),
-                  );
-                }
-        
-                // when no prompts
-                return const Padding(
-                  padding: EdgeInsets.all(12),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: NoPromptsCard(),
                   ),
-                );
-              },
-            ),
-            
+        
+                if( promptProvider.error != null )
+                  Positioned(
+                    top: 12,
+                    left: 12,
+                    right: 12,
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.orange[700],
+                        borderRadius: const BorderRadius.all(Radius.circular(6))
+                      ),
+                      child: Text(
+                        promptProvider.error == ErrorType.server ? "A server error occurred. Please try again" : "Seems like Yoda is tired and out of tokens. He's gone to rest now.",
+                      ),
+                    ),
+                  ),
+                
+                // when no prompts
+                if( promptProvider.prompts.isEmpty )
+                  const Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: NoPromptsCard(),
+                    ),
+                  ),
+          
+                // prompt input
+                Positioned(
+                  bottom: 24,
+                  left: 0,
+                  width: size.width,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    color: Colors.white.withOpacity(.9),
+                    // height: 56,
+                    child: PromptForm(onAdd: _onAddPrompt),
+                  ),
+                ),
       
-            // prompt input
-            Positioned(
-              bottom: 24,
-              left: 0,
-              width: size.width,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                color: Colors.white.withOpacity(.9),
-                // height: 56,
-                child: PromptForm(onAdd: _onAddPrompt),
-              ),
-            ),
-      
-          ],
+              ],
+            );
+          },
         ),
       ),
     );
